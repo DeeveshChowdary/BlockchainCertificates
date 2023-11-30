@@ -136,3 +136,7 @@ __pycache__
 .hypothesis/
 build/
 reports/
+
+
+*.pem
+.DS_Store
