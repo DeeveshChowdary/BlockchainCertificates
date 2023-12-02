@@ -140,3 +140,4 @@ reports/
 
 *.pem
 .DS_Store
+setup_config.py
