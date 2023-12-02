@@ -10,15 +10,8 @@ def send_transaction(
     web3 = getWeb3()
     nonce = web3.eth.getTransactionCount(sender_address)
 
-    d = {
-        "Transaction Type": "Certificate",
-        "Certificate Hash": "THIS IS THE CERTIFICATE HASH",
-        "Certificate Link": "https://chat.openai.com/chat/e283fdaa-d3b7-4dc7-999d-33dc9746306d",
-    }
+    text_data = json.dumps(data).encode("utf-8")
 
-    text_data = json.dumps(d).encode("utf-8")
-
-    print("TEXT DATA", text_data)
     tx = {
         "nonce": nonce,
         "to": recipient_address,
@@ -40,7 +33,45 @@ def get_transaction_details(transaction_hash):
     text = web3.eth.getTransaction(transaction_hash).input
 
     bytesStr = codecs.decode("{}".format(text[2:]), "hex_codec")
-    print("STR", bytesStr)
 
     resp = eval(bytesStr.decode())
     return {"data": resp}
+
+
+def get_all_transactions(public_id):
+    web3 = getWeb3()
+    ending_blocknumber = web3.eth.blockNumber
+
+    # print("ENDING BLOCK", ending_blocknumber)
+
+    respo = []
+
+    for x in range(ending_blocknumber):
+        block = web3.eth.getBlock(x, True)
+        for transaction in block.transactions:
+            if transaction["to"] == public_id:
+                respo.append(
+                    {
+                        "transaction_hash": transaction["hash"].hex(),
+                        "from": str(transaction["from"]),
+                        "transaction_details": get_transaction_details(
+                            transaction["hash"]
+                        ),
+                    }
+                )
+
+    pending_tx_filter = web3.eth.filter("pending")
+    pending_tx = pending_tx_filter.get_new_entries()
+
+    for t in pending_tx:
+        transaction = web3.eth.getTransaction(t)
+        if transaction["to"] == public_id:
+            respo.append(
+                {
+                    "transaction_hash": transaction["hash"].hex(),
+                    "from": str(transaction["from"]),
+                    "transaction_details": get_transaction_details(transaction["hash"]),
+                }
+            )
+
+    return respo
