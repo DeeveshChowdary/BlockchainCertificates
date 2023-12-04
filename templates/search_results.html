@@ -1,0 +1,36 @@
+
+
+{% extends 'header.html' %}
+{% block body %}
+<h1>Search Results</h1>
+<div class="card-container">
+{% if not results%}
+<h1> No Search Results</h1>
+{% else %}
+<div class="row">
+
+    <div class="column">
+
+
+    
+{% for i in results %}
+<div class="card">
+    <div class="card-header">
+        <img height="120px" width = "120px" src="http://cdn.onlinewebfonts.com/svg/img_24787.png">
+        <h2>{{ i.first_name + " " + i.last_name }}</h2>
+    </div>
+    <div class="card-body">
+        <p>Email: {{ i.email }}</p>
+    </div>
+    <div class="card-footer">
+        <a href='{{ "/view_profile?id={}".format(i.id) }}' target="_blank">View Profile</a>
+    </div>
+</div>
+{% endfor %}
+
+</div>
+</div>
+
+{% endif %}
+
+{% endblock %}

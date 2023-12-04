@@ -1,0 +1,102 @@
+{% extends 'header.html' %}
+<html>
+
+<head>
+    <title>Transactions</title>
+    <style>
+        table {
+            font-family: Arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #dddddd;
+        }
+
+        wrap{
+            background: rgb(2,0,36);
+background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(121,109,9,1) 14%, rgba(0,212,255,1) 100%);
+        }
+
+    </style>
+</head>
+{% block body %}
+
+    {% if current_user and current_user.role == "100" %}
+<div class="wrap">
+<form action="/issue_certificate" style=" margin: 0 auto; ">
+    <input type="hidden" name="user_id" value={{user.id}} />
+    <input type="submit" value="Issue Certificate" />
+</form>
+
+    {% endif %}
+
+    <h1>Education</h1>
+    <table width="100%" style="text-align: center; border-radius: 10px;" border="1px solid">
+        <tr>
+            <th>From</th>
+            <th>School</th>
+            <th>Grade</th>
+            <th>University</th>
+            <th>View This Credential</th>
+        </tr>
+        {% for cert in certificates %}
+
+        {% if cert["transaction_details"]["data"]["Transaction Type"] == "Education"%}
+        <tr>
+            <td>{{ cert['from'] }}</td>
+            <td>{{ cert["transaction_details"]["data"]['School'] }}</td>
+            <td>{{ cert["transaction_details"]["data"]['Grade'] }}</td>
+            <td>{{ cert["transaction_details"]["data"]['University'] }}</td>
+            <td> 
+                <form action="/get_transaction_information" style=" margin: 0 auto; ">
+                    <input type="hidden" name="transaction_hash" value={{cert["transaction_hash"]}} />
+                    <input type="submit" value="View This Credential" />
+                </form>
+            </td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </table>
+
+
+    <h1>Experience</h1>
+    <table width="100%" style="text-align: center; border-radius: 10px;" border="1px solid">
+        <tr>
+            <th>From</th>
+            <th>Company</th>
+            <th>Role</th>
+            <th>Comments</th>
+            <th>View This Credential</th>
+        </tr>
+        {% for cert in certificates %}
+    
+        {% if cert["transaction_details"]["data"]["Transaction Type"] == "Experience"%}
+        <tr>
+            <td>{{ cert['from'] }}</td>
+            <td>{{ cert["transaction_details"]["data"]['company'] }}</td>
+            <td>{{ cert["transaction_details"]["data"]['role'] }}</td>
+            <td>{{ cert["transaction_details"]["data"]['comments'] }}</td>
+            <td>  
+                <form action="/get_transaction_information" style=" margin: 0 auto; ">
+                    <input type="hidden" name="transaction_hash" value={{cert["transaction_hash"]}} />
+                    <input type="submit" value="View This Credential" />
+                </form>
+            </td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </table>
+
+</div>
+
+
+{% endblock %}

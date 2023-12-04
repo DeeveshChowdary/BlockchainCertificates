@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="static/header.css">
+        {% block head %}
+        {% endblock %}
+</head>
+<header>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            {% if current_user.is_authenticated and current_user.role != "100" %}
+            <li><a href="{{ url_for('profile.view_my_profile') }}">View My Profile</a></li>
+            {% endif %}
+            {% if current_user.is_authenticated and current_user.role == "100" %}
+            <li><a href="{{ url_for('transactions.issue_certificate') }}">Issue Certificates</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    <div class="search-bar">
+        <form action="search" method="get">
+            <input type="text" name="query" placeholder="Search...">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    <div class="user-buttons">
+        {% if current_user.is_authenticated %}
+        <a href="{{ url_for('user_details.update_profile') }}">Update Details</a>
+        <a href="{{ url_for('login.logout') }}">Logout</a>
+        {% else %}
+        <a href="{{ url_for('login.login') }}">Login</a>
+        <a href="{{ url_for('signup.signup') }}">Signup</a>
+        {% endif %}
+    </div>
+</header>
+<body>
+
+    {% block body %}
+    {% endblock %}
+</body>
+
+</html>

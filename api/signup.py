@@ -17,7 +17,7 @@ def signup():
             "last_name": request.form.get("last_name", None),
             "email": request.form.get("email", None),
             "password": generate_password_hash(
-                request.form.get("password", None), method="sha256"
+                request.form.get("password", None)
             ),
         }
 

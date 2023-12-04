@@ -5,8 +5,10 @@ except ImportError:
 
 from models.profiles import Profile
 
+from flask_login import UserMixin, login_manager
 
-class User(db.Model):
+
+class User(db.Model, UserMixin):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -34,3 +36,6 @@ class User(db.Model):
 
     def __repr__(self) -> str:
         return "{}, {}".format(self.first_name, self.last_name)
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}

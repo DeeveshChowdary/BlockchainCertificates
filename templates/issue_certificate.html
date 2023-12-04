@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Registration Form</title>
+    <style>
+        form {
+            background-color: #f2f2f2;
+            padding: 20px;
+            border-radius: 5px;
+            width: 500px;
+            margin: auto;
+        }
+
+        input[type=text],
+        input[type=password] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button[type=submit] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button[type=submit]:hover {
+            background-color: #45a049;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 >Issue Certificate</h1>
+    <div class="container">
+        <form method="POST" action="/issue_certificate">
+            <label for="sender_address">Sender Address:</label>
+            <input type="text" id="sender_address" name="sender_address" value="{{ current_user.public_key }}"  required>
+
+            <table style="text-align: center; border: 1px solid; width: 100%; border-radius: 10px;">
+
+            <tr>
+                <td>
+                    <label for="sender_private_key">Sender Private Key:</label>
+                </td>
+                <td>
+                    <input type="sender_private_key" id="sender_private_key" name="sender_private_key" required>
+                </td>
+            </tr>
+            
+            <!-- <label for="sender_private_key">Sender Private Key:</label>
+            <input type="sender_private_key" id="sender_private_key" name="sender_private_key" required> -->
+            
+            <tr>
+                <td>
+                    <label for="recipient_address">Recipient Address:</label>
+                </td>
+                <td>
+                    <input type="recipient_address" id="recipient_address" name="recipient_address" value="{{ issue_user.public_key }}"
+                        required>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <label for="certificate_type">Certificate Type:</label>
+                </td>
+                <td>
+                    <input type="certificate_type" id="certificate_type" name="certificate_type" required>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="cert_type">Certificate Type:</label>
+                </td>
+                <td>
+                    <select name="cert_type" id="cert_type">
+                    <option value="Education"> Education </option>    
+                    <option value="Experience"> Experience </option>
+                    </select>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    <label for="company">Company:</label>
+                </td>
+                <td>
+                    <input type="company" id="company" name="company">
+                </td>
+            </tr>
+
+            
+            <tr>
+                <td>
+                    <label for="role">Role:</label>
+                </td>
+                <td>
+                    <input type="role" id="role" name="role">
+                </td>
+            </tr>
+
+            
+            <tr>
+                <td>
+                    <label for="comments">Comments:</label>
+                </td>
+                <td>
+                    <input type="comments" id="comments" name="comments">
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+            <label for="grade">Grade:</label>
+            
+                </td>
+                <td>
+                    <input type="grade" id="grade" name="grade">
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="university">University:</label>
+                    
+                </td>
+                <td>
+                    <input type="university" id="university" name="university">
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="school">School:</label>
+                    
+                </td>
+                <td>
+                    <input type="school" id="school" name="school">
+                </td>
+            </tr>
+
+            
+
+
+            
+
+            
+
+
+            </table>
+            <button type="submit">Issue Certificate</button>
+        </form>
+    </div>
+</body>
+
+</html>
