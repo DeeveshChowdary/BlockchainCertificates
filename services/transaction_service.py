@@ -3,7 +3,6 @@ from constants.web3 import getWeb3
 import codecs
 import json
 
-
 def send_transaction(
     sender_address, sender_private_key, recipient_address, value, data
 ):
@@ -27,6 +26,10 @@ def send_transaction(
     if receipt:
         return tx_hash.hex()
 
+def send_transaction_helper(contract, sender_private_key, recipient_address, data):
+    account = accounts.add(sender_private_key)
+    tx = contract.sendTransaction(recipient_address, json.dumps(data), {'from': account})
+    return tx
 
 def get_transaction_details(transaction_hash):
     web3 = getWeb3()
@@ -37,6 +40,11 @@ def get_transaction_details(transaction_hash):
     resp = eval(bytesStr.decode())
     return {"data": resp}
 
+def get_transaction_details_helper(transaction_hash):
+    web3 = getWeb3()
+    tx = web3.eth.get_transaction(transaction_hash)
+    input_data = tx.input
+    return input_data
 
 def get_all_transactions(public_id):
     web3 = getWeb3()
@@ -75,3 +83,10 @@ def get_all_transactions(public_id):
             )
 
     return respo
+
+def get_all_transactions_helper(recipient_address):
+    contract = getWeb3()
+    filter = contract.events.TransactionMade.createFilter(fromBlock=0, argument_filters={'to': recipient_address})
+    events = filter.get_all_entries()
+    transactions = [{'from': event.args, 'to': event.args.to, 'jsonData': event.args.jsonData} for event in events]
+    return transactions
